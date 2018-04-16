@@ -290,7 +290,6 @@ void* handler_request(void* arg)
 	}
 
 	sprintf(path,"wwwroot%s",url);//将真实路径保存在path中
-	//
 	if(path[strlen(path)-1]=='/'){//如果路径只有一个主目录的话
 		strcat(path,"index.html");//添加上HTML文件
 	}

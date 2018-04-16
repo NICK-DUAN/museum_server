@@ -14,31 +14,22 @@ SQL::SQL(const string &host,const int& port,const string& user,const string& pas
 int SQL::connect()
 {
 	int ret=0;
-//    cout<<"_conn="<<_conn<<endl;
-//    cout<<"_host="<<_host<<endl;
-//    cout<<"_user="<<_user<<endl;
-//    cout<<"_password="<<_password<<endl;
-//    cout<<"_port="<<_port<<endl;
-//    cout<<"_database="<<_database<<endl;
     if(mysql_real_connect(_conn,_host.c_str(),_user.c_str(),_password.c_str(),_database.c_str(),_port,NULL,0)){
-//        cout<<"connect success!"<<endl;
     }else{
 		ret=-1;
         cout<<"connect failed"<<endl;
     }
 	return ret;
 }
-int SQL::insert(const string& name,const string& sex,const string& birthday,const string& school)
+int SQL::insert(const string& temperature, const string& light, const string& water)
 {
 	int ret=0;
-    string INSERT="insert into student(name,sex,birthday,school) values('";
-    INSERT+=name;
+    string INSERT="insert into museum(temperature,light,water) values('";
+    INSERT+=temperature;
     INSERT+="','";
-    INSERT+=sex;
+    INSERT+=light;
     INSERT+="','";
-    INSERT+=birthday;
-    INSERT+="','";
-    INSERT+=school;
+    INSERT+=water;
     INSERT+="')";
     cout<<INSERT<<endl;
     int r=mysql_query(_conn,INSERT.c_str());
@@ -54,8 +45,7 @@ int SQL::insert(const string& name,const string& sex,const string& birthday,cons
 int SQL::show()
 {
 	int ret=0;
-	string show="select * from student";
-	//cout<<show<<endl;
+	string show="select * from museum";
 	if(mysql_query(_conn,show.c_str())==0){
 		res=mysql_store_result(_conn);
 		if(res){
@@ -89,7 +79,7 @@ int SQL::show()
 int SQL::select(const string &id)
 {
 	int ret=0;
-	string select="select * from student where id in(";
+	string select="select * from museum where id in(";
 	select+=id;
 	select+=")";
 	if(mysql_query(_conn,select.c_str())==0){
@@ -123,7 +113,7 @@ int SQL::Delete(const string& id)
 	if(select(id)<0){
 		ret=-1;
 	}
-	string Delete="delete from student where id='";
+	string Delete="delete from museum where id='";
 	Delete+=id;
 	Delete+="'";
 	cout<<Delete<<endl;
