@@ -13,7 +13,7 @@ class SQL
 public:
     SQL(const string &host,const int& port,const string& user="root",const string& password="",const string& database="data");
     int connect();
-    int insert(const string& name,const string& sex,const string& birthday,const string& school);
+    int insert(const string& temperature,const string& light,const string& water);
 	int select(const string &id);
 	int show();
 	int Delete(const string& id);

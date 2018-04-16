@@ -1,15 +1,11 @@
 #include "sql_api.h"
 #include <unistd.h>
 
-void insert_to_database(char* name,char* sex,char* birthday,char* school)
+void insert_to_database(char* temperature, char* light, char* water)
 {
-	//cout<<"name----------"<<name<<endl;
-	//cout<<"sex-----------"<<sex<<endl;
-	//cout<<"birthday------"<<birthday<<endl;
-	//cout<<"school--------"<<school<<endl;
     SQL s("127.0.0.1",3306,"root","123456","data");
     s.connect();
-    s.insert(name,sex,birthday,school);
+    s.insert(temperature, light, water);
 }
 
 int main()
@@ -49,7 +45,6 @@ int main()
 	int i=0;
 	int j=0;
 	int k=0;
-
 	while (query[i]){
 		if (query[i++] == '=' && query[i]){
 			if (query[i] != '&' &&query[i])
@@ -64,7 +59,7 @@ int main()
 	//for(i=0;data[i];i++){
 	//	cout<<"data-------"<<data[i]<<endl;
 	//}
-	insert_to_database(data[0],data[1],data[2],data[3]);
+	insert_to_database(data[0],data[1],data[2]);
 	
     return 0;
 }
