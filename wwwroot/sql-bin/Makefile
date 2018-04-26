@@ -4,7 +4,7 @@ MYSQL_LIB=$(ROOTPATH)/lib/lib
 
 
 .PHONY:all
-all:insert_cgi show_cgi select_cgi Delete_cgi
+all:insert_cgi show_cgi select_cgi Delete_cgi register_cgi login_cgi
 
 insert_cgi:insert_cgi.o sql_api.o
 	g++ -o $@ $^ -L$(MYSQL_LIB) -lmysqlclient -g
@@ -13,6 +13,10 @@ show_cgi:show_cgi.o sql_api.o
 select_cgi:select_cgi.o sql_api.o
 	g++ -o $@ $^ -L$(MYSQL_LIB) -lmysqlclient
 Delete_cgi:Delete_cgi.o sql_api.o
+	g++ -o $@ $^ -L$(MYSQL_LIB) -lmysqlclient -g
+register_cgi:register_cgi.o sql_api.o
+	g++ -o $@ $^ -L$(MYSQL_LIB) -lmysqlclient -g
+login_cgi:login_cgi.o sql_api.o
 	g++ -o $@ $^ -L$(MYSQL_LIB) -lmysqlclient -g
 %.o:%.cpp
 	g++ -c $< -I$(MYSQL_INCLUDE) 

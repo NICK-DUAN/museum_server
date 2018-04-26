@@ -186,7 +186,7 @@ static int exe_cgi(int sock,char* method,char* path,char* query_string)//该函�
 
 		//此时子进程读取数据时，会使用input[0]从管道的读端读取————>即从父进程中读取
 		//子进程写数据时，会使用output[1]写入管道————>即写入父进程中
-        printf("---path:%s---\n",path);
+        //printf("---path:%s---\n",path);
 		execl(path,path,NULL);//execl程序替换，相当于执行path路径中的path命令，即执行path路径中的名为"path"的程序
 		exit(1);
 	}else{//father
@@ -291,7 +291,7 @@ void* handler_request(void* arg)
 
 	sprintf(path,"wwwroot%s",url);//将真实路径保存在path中
 	if(path[strlen(path)-1]=='/'){//如果路径只有一个主目录的话
-		strcat(path,"index.html");//添加上HTML文件
+		strcat(path,"reg_log.html");//添加上HTML文件
 	}
 
 	struct stat st;

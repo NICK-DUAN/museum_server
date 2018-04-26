@@ -1,26 +1,31 @@
 <html>
 	<!--<body bgcolor="LightCyan">-->
-	<body background="1.jpg">
-		<center>
-			<h1>Hello world</h1>
-			<form action="./sql-bin/show_cgi">
-				<!--<form action="./cgi-bin/mycgi">-->
-				NAME:<br>
-				<input type="text" name="NAME" value="">
+	<center>
+    <meta charset="UTF-8">
+	<body background="museum.jpg">
+			<h1>博物馆环境检测系统</h1>
+            <form action=./sql-bin/insert_cgi>
+				温度:
+				<input type="text" name="name" value="">
 				<br>
-				SEX:<br>
-				<input type="text" name="SEX" value="">
 				<br>
-				BIRTHDAY:<br>
-				<input type="text" name="BIRTHDAY" value="">
+				光照:
+				<input type="text" name="sex" value="">
 				<br>
-				SCHOOL:<br>
-				<input type="text" name="SCHOOL" value="">
-				<br><br>
-				<input type="submit" value="Submit">
+				<br>
+				湿度:
+				<input type="text" name="birthday" value="">
+				<br>
+				<br>
+				<br>
+				<input type="submit" value="插入">
 			</form> 
 
-			<!-- <img src="./1.jpg" alt="default">-->
+			<form action="./sql-bin/show_cgi">
+				<input type="submit" value="显示">
+			</form> 
+
+
 			</center>
 		</body>
 </html>

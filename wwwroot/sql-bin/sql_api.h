@@ -17,6 +17,8 @@ public:
 	int select(const string &id);
 	int show();
 	int Delete(const string& id);
+    int Register(const string& account, const string& pwd);
+    int login(const string& account, const string& pwd);
     ~SQL();
 private:
     SQL();

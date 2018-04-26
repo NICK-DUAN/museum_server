@@ -31,15 +31,25 @@ int SQL::insert(const string& temperature, const string& light, const string& wa
     INSERT+="','";
     INSERT+=water;
     INSERT+="')";
-    cout<<INSERT<<endl;
+    cout<<"<html><center><body background=\"museum.jpg\"><h4>"<<INSERT<<"</h4>";
     int r=mysql_query(_conn,INSERT.c_str());
     if(r!=0){
-        cout<<"insert failed"<<endl;
+        cout<<"<h5>insert failed</h5></html>"<<endl;
 		ret=-1;
     }else{
-		cout<<"insert success!"<<endl;
+		cout<<"<h5>insert success!</h5></center></body></html>"<<endl;
 	}
 	return ret;
+}
+
+string formatstr(string str){
+    if(str.length() >= 15){
+        return str;
+    }
+    while(str.length() < 15){
+        str += " ";
+    }
+    return str;
 }
 
 int SQL::show()
@@ -51,21 +61,20 @@ int SQL::show()
 		if(res){
 			int nums=mysql_num_rows(res);
 			int col =mysql_num_fields(res);
-			cout<<"nums="<<nums<<" "<<"col="<<col<<endl;
 			MYSQL_FIELD *fd;
-			for(;fd=mysql_fetch_field(res);){
-                cout<<fd->name<<" ";
+            for(;fd=mysql_fetch_field(res);){
+                cout<<formatstr(fd->name)<<"   ";
 			}
-			cout<<endl<<endl;
+            cout<<endl<<endl;
 			int i=0;
 			int j=0;
 			for(;i<nums;i++){
 				MYSQL_ROW row=mysql_fetch_row(res);
 				j=0;
 				for(;j<col;j++){
-					cout<<row[j]<<"    ";
+                    cout<<formatstr(row[j])<<"   ";
 				}
-				cout<<endl<<endl;
+                cout<<endl<<endl;
 			}
 		}else{
 			ret=-1;
@@ -107,6 +116,48 @@ int SQL::select(const string &id)
 	}
 	return ret;
 }
+
+int SQL::Register(const string& account, const string& pwd){
+	int ret = 0;
+	string reg="insert into museum_user(account,password) values('";
+	reg+=account;
+    reg+="','";
+    reg+=pwd;
+    reg+="')";
+    cout<<"<html><center><body background=\"museum.jpg\">";
+    int r=mysql_query(_conn, reg.c_str());
+    if(r!=0){
+        cout<<"<h5>register failed</h5></html>"<<endl;
+		ret=-1;
+    }else{
+		cout<<"<h5>register success!</h5></center></body></html>"<<endl;
+	}
+}
+
+int SQL::login(const string& account, const string& pwd){
+	int ret = 0;
+	string select="select password from museum_user where account=\"";
+	select+=account;
+    select+="\"";
+    if(mysql_query(_conn,select.c_str())==0){
+		res=mysql_store_result(_conn);
+		if(res){
+			int col=mysql_num_fields(res);
+			MYSQL_ROW msg=mysql_fetch_row(res);
+			if(msg){
+                if(pwd != msg[0]){
+                    ret = -2;
+                }
+            }else{
+                ret = -1;
+            }
+		}
+    }else{
+        ret = -1;
+    }
+	return ret;
+}
+
 int SQL::Delete(const string& id)
 {
 	int ret=0;
