@@ -23,7 +23,7 @@ login_cgi:login_cgi.o sql_api.o
 
 .PHONY:clean
 clean:
-	rm -f insert_cgi select_cgi show_cgi Delete_cgi *.o
+	rm -f insert_cgi select_cgi show_cgi Delete_cgi register_cgi login_cgi *.o
 .PHONY:debug
 debug:
 	echo $(MYSQL_INCLUDE)
