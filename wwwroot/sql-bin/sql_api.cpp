@@ -127,10 +127,14 @@ int SQL::Register(const string& account, const string& pwd){
     cout<<"<html><center><body background=\"museum.jpg\">";
     int r=mysql_query(_conn, reg.c_str());
     if(r!=0){
-        cout<<"<h5>register failed</h5></html>"<<endl;
+        cout<<"<h2>register failed</h2><br>";
+        cout<<"<p align=\"center\"><a href=\"../register.html\"><input type=\"button\" value=\"重新注册\"></a></p>";
+        cout<<"</center></body></html>";
 		ret=-1;
     }else{
-		cout<<"<h5>register success!</h5></center></body></html>"<<endl;
+		cout<<"<h5>register success!</h5>";
+        cout<<"<p align=\"center\"><a href=\"../reg_log.html\"><input type=\"button\" value=\"返回登录界面\"></a></p>";
+        cout<<"</center></body></html>";
 	}
 }
 

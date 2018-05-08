@@ -6,13 +6,6 @@ void register_database(char* account, char* pwd)
     SQL s("127.0.0.1",3306,"root","123456","data");
     s.connect();
     s.Register(account, pwd);
-    //if(ret == 0){
-    //    cout << "login success!" << endl;
-    //}else if(ret == -1){
-    //    cout << "503 server busy, please try later" << endl;
-    //}else if(ret == -2){
-    //    cout << "please check your password" << endl;
-    //}
 }
 
 int main()
