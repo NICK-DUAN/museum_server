@@ -9,12 +9,33 @@ void echo_string(int sock){//该函数用于当服务器出错时，给客户端
 	send(sock,show,strlen(show),0);
 }
 
+char* get_date(char* date, int flag){
+    memset(date,0,sizeof(char)*strlen(date));
+    time_t timep;
+    struct tm *p;
+    time(&timep);
+    p=gmtime(&timep);
+    if(flag==1){
+        sprintf(date,"%d%d%d",(1900+p->tm_year),(1+p->tm_mon),p->tm_mday);
+        return date;
+    }else{
+        sprintf(date,"%d%d%d",(1900+p->tm_year),(1+p->tm_mon),p->tm_mday);
+        sprintf(date,"%d:%d:%d",p->tm_hour, p->tm_min, p->tm_sec);
+        return date;
+    }
+}
+
 void print_log(char* str,int level)
 {
-#if 0
-	int fd = open("/log/file",O_WRONLY);
-	write(fd,strerror,strlen(strerror));
-#else
+    char date[16]={0};
+    get_date(date,1);
+    char file_name[]="/home/dlm/server/logs/";
+    strcat(file_name,date);
+    FILE* log_file=fopen(file_name,"a");
+    if(log_file==NULL){
+        printf("日志系统打开失败!\n");
+        exit(-1);
+    }
 	const char* level_msg[]={//出错等级
 		"SUCCESS",
 		"NOTICE",
@@ -22,8 +43,11 @@ void print_log(char* str,int level)
 		"ERROR",
 		"FATAL",
 	};
-	printf("%s--%s\n",str,level_msg[level%5]);//打印错误消息，调试版本，以后可以直接往文件里面打
-#endif 
+    char log[64]={0};
+    get_date(date,2);
+	sprintf(log,"%s-%s-%s\n",date,level_msg[level%5],str);
+    fputs(log,log_file);
+    fclose(log_file);
 }
 
 int startup(char* ip,char* port)
@@ -87,7 +111,6 @@ static int get_line(int sock,char line[],int size)//该函数每次读取一行�
 static int echo_www(int sock,char *path,int size){//该函数用于访问静态网页
 	int fd=open(path,O_RDONLY);//打开请求的路径中的网页文件
 	if(fd<0){
-		printf("fd\n");
 		echo_string(sock);
 		print_log(strerror(errno),FATAL);
 		return 8;
@@ -98,7 +121,6 @@ static int echo_www(int sock,char *path,int size){//该函数用于访问静态�
 	send(sock,answer,strlen(answer),0);
 
 	if(sendfile(sock,fd,NULL,size)<0){//将fd文件中的信息写入sock套接字中
-		printf("sendfile\n");
 		echo_string(sock);
 		print_log(strerror(errno),FATAL);
 		return 9;
@@ -136,7 +158,7 @@ static int exe_cgi(int sock,char* method,char* path,char* query_string)//该函�
 			}
 		}while(ret>0 && strcmp(line,"\n"));
 		if(content_len==-1){
-			printf("content_len\n");
+            print_log(strerror(errno),FATAL);
 			echo_string(sock);
 			return 10;
 		}
@@ -148,19 +170,19 @@ static int exe_cgi(int sock,char* method,char* path,char* query_string)//该函�
 	int input[2];
 	int output[2];
 	if(pipe(input)!=0){//创建一个管道in
-		printf("in\n");
+        print_log(strerror(errno),FATAL);
 		echo_string(sock);
 		return 11;
 	}
 	if(pipe(output)!=0){//创建一个管道out
-		printf("out\n");
+        print_log(strerror(errno),FATAL);
 		echo_string(sock);
 		return 12;
 	}
 	pid_t id=fork();//fork子进程
 	if(id<0){
-		printf("fork\n");
 		echo_string(sock);
+        print_log(strerror(errno),FATAL);
 		return 13;
 	}else if(id==0){//child
 		char method_env[SIZE/10];
@@ -244,7 +266,7 @@ void* handler_request(void* arg)
 	char path[SIZE/10];
 	char *query_string=NULL;
 	if(get_line(sock,line,sizeof(line))<=0){
-		printf("get_line\n");
+		print_log(strerror(errno),FATAL);
 		echo_string(sock);
 		ret=6;//没有读到数据，或当前语法出错,直接退出返回
 		goto end;
@@ -257,7 +279,7 @@ void* handler_request(void* arg)
 	method[j]=0;//给保存方法的字符串后面添加'\0'
 
 	if(strcasecmp(method,"GET") && strcasecmp(method,"POST") ){//如果不为这两种方法，则出错，关闭文件描述符
-		printf("judge method\n");
+		print_log(strerror(errno),FATAL);
 		echo_string(sock);
 		ret=7;
 		goto end;
@@ -295,15 +317,15 @@ void* handler_request(void* arg)
 	}
 
 	struct stat st;
-	printf("path=%s\n",path);
-	if(stat(path,&st)!=0){//判断path路径是何种文件出错
-		printf("judge document\n");
+	printf("%s\n",path);
+	if(stat(path, &st)!=0){//判断path路径是何种文件出错
+        print_log(strerror(errno),FATAL);
 		echo_string(sock);
 		ret=8;
 		goto end;
 	}else{
 		if(S_ISDIR(st.st_mode)){//是一个不带'/'的目录
-			strcat(path,"/index.html");
+			strcat(path,"/reg_log.html");
 		}
 		else if( (st.st_mode & S_IXUSR) || (st.st_mode & S_IXGRP) || (st.st_mode & S_IXOTH)){//是一个可执行程序
 			cgi=1;
@@ -311,10 +333,10 @@ void* handler_request(void* arg)
 	}
 
 	if(cgi){
-		printf("method:%s-----url:%s-----path:%s-----query_string:%s\n",method,url,path,query_string);
+		printf("\n\nmethod:%s-----url:%s-----path:%s-----query_string:%s\n\n",method,url,path,query_string);
 		exe_cgi(sock,method,path,query_string);//请求可执行程序
 	}else{
-		printf("method:%s-----url:%s-----path:%s-----query_string:%s\n",method,url,path,query_string);
+		printf("\nmethod:%s-----url:%s-----path:%s-----query_string:%s\n\n",method,url,path,query_string);
 		drop_header(sock);
 		echo_www(sock,path,st.st_size);//请求网页信息
 	}

@@ -124,7 +124,7 @@ int SQL::Register(const string& account, const string& pwd){
     reg+="','";
     reg+=pwd;
     reg+="')";
-    cout<<"<html><center><body background=\"museum.jpg\">";
+    cout<<"<html><center><meta charset=\"utf-8\"><body background=\"museum.jpg\">";
     int r=mysql_query(_conn, reg.c_str());
     if(r!=0){
         cout<<"<h2>register failed</h2><br>";

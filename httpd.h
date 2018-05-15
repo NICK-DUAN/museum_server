@@ -11,6 +11,7 @@
 #include <sys/sendfile.h>
 #include <sys/wait.h>
 #include <ctype.h>
+#include <time.h>
 
 #define SUCCESS 0
 #define NOTICE  1
@@ -19,6 +20,8 @@
 #define FATAL   4
 
 #define SIZE    1024
+
+char* get_date(char* date, int flag);
 
 void print_log(char* str,int level);
 
