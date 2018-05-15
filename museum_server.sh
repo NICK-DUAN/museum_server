@@ -36,6 +36,13 @@ start_server(){
 stop_server(){
     if [ -z "$mypid" ]
     then
+        echo "museum server stopping..."
+        make clean >& /dev/null
+        cd wwwroot/sql-bin
+        make clean >& /dev/null
+        cd ../android
+        make clean >& /dev/null
+        cd ../../
         echo "stop success"
     else
         echo "museum server stopping..."
