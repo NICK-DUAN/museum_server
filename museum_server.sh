@@ -7,11 +7,11 @@ get_pid(){
 
 mypid=$(get_pid)
 
-MUSEUM="/home/dlm/server/httpd"
-CONF="/home/dlm/server/conf/start.conf"
-CONF_SET="/home/dlm/server/conf/setconf.sh"
+MYPATH=$(pwd)
 
-
+MUSEUM=$MYPATH/httpd
+CONF=$MYPATH/conf/start.conf
+CONF_SET=$MYPATH/conf/setconf.sh
 
 start_server(){
     echo "museum server executing..."

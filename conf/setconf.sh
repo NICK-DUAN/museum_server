@@ -1,6 +1,7 @@
 #!/bin/bash
 
-CONF="/home/dlm/server/conf/start.conf"
+MYPATH=$(pwd)
+CONF=$MYPATH/start.conf
 PORT="8080"
 
 local_host=`ifconfig | grep 'inet 地址' | grep '192.168' | awk '{print $2}' | tr -d "地址:"` # get local_host now

@@ -29,7 +29,7 @@ void print_log(char* str,int level)
 {
     char date[16]={0};
     get_date(date,1);
-    char file_name[]="/home/dlm/server/logs/";
+    char file_name[]="./logs/";
     strcat(file_name,date);
     FILE* log_file=fopen(file_name,"a");
     if(log_file==NULL){
