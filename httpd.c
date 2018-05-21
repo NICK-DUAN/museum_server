@@ -29,9 +29,13 @@ void print_log(char* str,int level)
 {
     char date[16]={0};
     get_date(date,1);
-    char file_name[]="./logs/";
-    strcat(file_name,date);
-    FILE* log_file=fopen(file_name,"a");
+    char this_path[64]={0};
+    if(getcwd(this_path,64)==NULL){
+        perror("getcwd func wrong process exit...");
+    }
+    strcat(this_path,"/logs/");
+    strcat(this_path,date);
+    FILE* log_file=fopen(this_path,"a");
     if(log_file==NULL){
         printf("日志系统打开失败!\n");
         exit(-1);

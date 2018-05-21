@@ -20,17 +20,16 @@ start_server(){
     make >& /dev/null
     cd wwwroot/sql-bin
     make clean >& /dev/null
-    make >& /dev/null
     cd ..
     cd android
     make clean >& /dev/null
     make >& /dev/null
     cd ../..
     sudo cp -r wwwroot /
-    echo "museum server execute success"
     IP=`grep 'IP' $CONF | awk '{print $2}'`
     PORT=`grep 'PORT' $CONF | awk '{print $2}'`
     $MUSEUM $IP $PORT
+    echo "museum server execute success"
 }
 
 stop_server(){
