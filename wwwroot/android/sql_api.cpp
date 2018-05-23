@@ -56,7 +56,7 @@ string formatstr(string str){
 int SQL::show()
 {
 	int ret=0;
-	string show="select * from museum";
+	string show="select * from museum order by createtime desc";
 	if(mysql_query(_conn,show.c_str())==0){
 		res=mysql_store_result(_conn);
 		if(res){
