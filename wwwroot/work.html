@@ -1,0 +1,27 @@
+        <html><center><meta charset="UTF-8">
+        <body>
+        <div id="Layer1" style="position:absolute; width:100%; height:100%; z-index:-1">
+        <img src="museum.jpg" height="100%" width="100%"/>
+        </div>
+        <h1>博物馆环境检测系统</h1>
+        <form action="./sql-bin/insert_cgi">
+        节点位置
+        <input type="text" name="guangzhao" value=""><br><br>
+        馆内温度
+        <input type="text" name="wendu" value=""><br><br>
+        PM__2.5
+        <input type="text" name="guangzhao" value=""><br><br>
+        馆内湿度
+        <input type="text" name="shidu" value=""><br><br>
+        CO2浓度
+        <input type="text" name="guangzhao" value=""><br><br>
+	    甲醛浓度
+        <input type="text" name="guangzhao" value=""><br><br>
+ 	    光照强度
+        <input type="text" name="guangzhao" value=""><br><br>
+        <br>
+        <input type="submit" value="插入">
+        </form>
+	<form action="./sql-bin/show_cgi">
+        <input type="submit" value="显示"></form>
+        </center></body></html>

@@ -56,7 +56,7 @@ string formatstr(string str){
 int SQL::show()
 {
 	int ret=0;
-	string show="select * from museum order by createtime desc";
+	string show="select * from museum order by `TIME` desc";
 	if(mysql_query(_conn,show.c_str())==0){
 		res=mysql_store_result(_conn);
 		if(res){
@@ -66,7 +66,7 @@ int SQL::show()
 			int j=0;
 				MYSQL_ROW row=mysql_fetch_row(res);
 				j=0;
-				for(j=1;j<col-1;j++){
+				for(j=1;j<col;j++){
                     cout<<formatstr(row[j])<<",";
 				}
 		}else{

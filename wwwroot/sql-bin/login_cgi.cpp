@@ -7,21 +7,18 @@ void check_database(char* account, char* pwd)
     s.connect();
     int ret = s.login(account, pwd);
     if(ret == 0){
-        cout<<"<html><center><meta charset=\"UTF-8\">";
-        cout<<"<body background=\"museum.jpg\">";
-        cout<<"<h1>博物馆环境检测系统</h1>";
-        cout<<"<form action=\"./insert_cgi\">";
-        cout<<"温度";
-        cout<<"<input type=\"text\" name=\"wendu\" value=\"\"><br><br>";
-        cout<<"光照";
-        cout<<"<input type=\"text\" name=\"guangzhao\" value=\"\"><br><br>";
-        cout<<"湿度";
-        cout<<"<input type=\"text\" name=\"shidu\" value=\"\"><br><br>";
-        cout<<"<br>";
-        cout<<"<input type=\"submit\" value=\"插入\">";
-        cout<<"</form><form action=\"./show_cgi\">";
-        cout<<"<input type=\"submit\" value=\"显示\"></form>";
-        cout<<"</center></body></html>";
+    cout<<"<html><center><meta charset=\"utf-8\">";
+    cout<<"<body>";
+    cout<<"<div id=\"Layer1\" style=\"position:absolute; width:100%; height:100%; z-index:-1\">";
+    cout<<"<img src=\"museum.jpg\" height=\"100%\" width=\"100%\"/>";
+    cout<<"</div>";
+    cout<<"<h1>博物馆环境检测系统</h1>";
+    cout<<"<form>";
+    cout<<"博物馆1<input type=\"radio\" name=\"museum_choice\" value=\"1\" checked=\"checked\">";
+    cout<<"<br/>博物馆2<input type=\"radio\" name=\"museum_choice\" value=\"2\"><br/>";
+    cout<<"博物馆3<input type=\"radio\"name=\"museum_choice\" value=\"3\"><br/>";
+    cout<<"<p align=\"center\"><a href=\"../work.html\"><input type=\"button\" value=\"确认选择\"></a></p>";
+    cout<<"</form></body></center></html>";
     }else if(ret == -1){
         cout<<"<html><meta charset=\"utf-8\"><body background=\"museum.jpg\"><center><h3>503 server busy, please try later</h3>";
         //cout<<"<p align=\"center\"><a href=\"../reg_log.html\">重新登录</a></p>";

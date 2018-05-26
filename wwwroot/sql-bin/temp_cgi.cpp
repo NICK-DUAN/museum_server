@@ -1,11 +1,11 @@
 #include "sql_api.h"
 #include <unistd.h>
 
-void insert_to_database(char* location, char* temperature, char* pm, char* hunidity,char* co2, char* fromaldehtde, char* light)
+void insert_to_database(char* choice)
 {
     SQL s("127.0.0.1",3306,"root","123456","data");
     s.connect();
-    s.insert(location, temperature, pm, hunidity, co2, fromaldehtde, light);
+    s.choose(choice);
 }
 
 int main()
@@ -41,7 +41,6 @@ int main()
 		*query='\0';
 	}
 
-	//cout<<"query-------"<<query<<endl;
 	int i=0;
 	int j=0;
 	int k=0;
@@ -56,10 +55,8 @@ int main()
 		}
 	}
 
-	//for(i=0;data[i];i++){
-	//	cout<<"data-------"<<data[i]<<endl;
-	//}
-	insert_to_database(data[0],data[1],data[2],data[3],data[4],data[5],data[6]);
+
+	insert_to_database(data[0]);
 	
     return 0;
 }

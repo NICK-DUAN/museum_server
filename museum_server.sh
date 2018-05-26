@@ -12,6 +12,16 @@ MYPATH=$(pwd)
 MUSEUM=$MYPATH/httpd
 CONF=$MYPATH/conf/start.conf
 CONF_SET=$MYPATH/conf/setconf.sh
+IP=`grep 'IP' $CONF | awk '{print $2}'`
+PORT=`grep 'PORT' $CONF | awk '{print $2}'`
+
+watch_httpd(){
+    _pid=`ps aux | grep "httpd" | grep -v 'grep' | awk '{print $2}'`
+    if [ -z "$_pid"  ]
+    then
+        $MUSEUM $IP $PORT
+    fi
+}
 
 start_server(){
     echo "museum server executing..."
@@ -20,15 +30,14 @@ start_server(){
     make >& /dev/null
     cd wwwroot/sql-bin
     make clean >& /dev/null
+    make >& /dev/null
     cd ..
     cd android
     make clean >& /dev/null
     make >& /dev/null
     cd ../..
-    sudo cp -r wwwroot /
-    IP=`grep 'IP' $CONF | awk '{print $2}'`
-    PORT=`grep 'PORT' $CONF | awk '{print $2}'`
     $MUSEUM $IP $PORT
+    watch_httpd
     echo "museum server execute success"
 }
 

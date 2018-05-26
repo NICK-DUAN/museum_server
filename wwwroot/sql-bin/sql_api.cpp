@@ -21,26 +21,61 @@ int SQL::connect()
     }
 	return ret;
 }
-int SQL::insert(const string& temperature, const string& light, const string& water)
+int SQL::insert(const string& location, const string& temperature, const string& pm, const string& hunidity, const string& co2, const string fromaldehtde, const string& light)
 {
 	int ret=0;
-    string INSERT="insert into museum(temperature,light,water) values('";
+    string INSERT="insert into museum(`LOCATION`,`TEMPERATURE`,`PM2.5`,`HUNIDITY`,`CO2`, `FORMALDEHTDE`,`LIGHT`) values('";
+    INSERT+="No.1 museum";
+    INSERT+="','";
     INSERT+=temperature;
     INSERT+="','";
-    INSERT+=light;
+    INSERT+=pm;
     INSERT+="','";
-    INSERT+=water;
+    INSERT+=hunidity;
+    INSERT+="','";
+    INSERT+=co2;
+    INSERT+="','";
+    INSERT+=fromaldehtde;
+    INSERT+="','";
+    INSERT+=light;
     INSERT+="')";
-    cout<<"<html><center><body background=\"museum.jpg\"><h4>"<<INSERT<<"</h4>";
     int r=mysql_query(_conn,INSERT.c_str());
+    cout<<"<html><meta charset=\"utf-8\"><center><body>";
+    cout<<"<div id=\"Layer1\" style=\"position:absolute; width:100%; height:100%; z-index:-1\">";
+    cout<<"<img src=\"museum.jpg\" height=\"100%\" width=\"100%\"/>";
+    cout<<"</div>";
     if(r!=0){
-        cout<<"<h5>insert failed</h5></html>"<<endl;
+        cout<<"<p><font size=\"6\" face=\"arial\" color=\"red\">存储失败!</font></p>";
 		ret=-1;
     }else{
-		cout<<"<h5>insert success!</h5></center></body></html>"<<endl;
+		cout<<"<p><font size=\"6\" face=\"arial\" color=\"red\">存储成功!</font></p>";
 	}
+    cout<<"<p align=\"center\"><a href=\"../work.html\"><input type=\"button\" value=\"返回上一界面\">";
+    cout<<"</a></p></body></center></html>";
 	return ret;
 }
+
+//int SQL::choose(const string& choice)
+//{
+//	int ret=0;
+//    string INSERT="insert into CHOICE(`choice`) values('";
+//    INSERT+=choice;
+//    INSERT+="')";
+//    int r=mysql_query(_conn,INSERT.c_str());
+//    cout<<"<html><meta charset=\"utf-8\"><center><body>";
+//    cout<<"<div id=\"Layer1\" style=\"position:absolute; width:100%; height:100%; z-index:-1\">";
+//    cout<<"<img src=\"museum.jpg\" height=\"100%\" width=\"100%\"/>";
+//    cout<<"</div>";
+//    if(r!=0){
+//        cout<<"<p><font size=\"6\" face=\"arial\" color=\"red\">存储失败!</font></p>";
+//		ret=-1;
+//    }else{
+//		cout<<"<p><font size=\"6\" face=\"arial\" color=\"red\">存储成功!</font></p>";
+//	}
+//    cout<<"<p align=\"center\"><a href=\"../work.html\"><input type=\"button\" value=\"返回上一界面\">";
+//    cout<<"</a></p></body></center></html>";
+//	return ret;
+//}
 
 string formatstr(string str){
     if(str.length() >= 15){
@@ -55,7 +90,7 @@ string formatstr(string str){
 int SQL::show()
 {
 	int ret=0;
-	string show="select * from museum order by createtime desc";
+	string show="select * from museum order by `TIME` desc";
 	if(mysql_query(_conn,show.c_str())==0){
 		res=mysql_store_result(_conn);
 		if(res){
@@ -70,11 +105,11 @@ int SQL::show()
 			int j=0;
 			for(;i<nums;i++){
 				MYSQL_ROW row=mysql_fetch_row(res);
-				j=0;
-				for(;j<col;j++){
+				for(j=0;j<col;j++){
                     cout<<formatstr(row[j])<<"   ";
 				}
                 cout<<endl<<endl;
+
 			}
 		}else{
 			ret=-1;
@@ -149,17 +184,17 @@ int SQL::login(const string& account, const string& pwd){
 			int col=mysql_num_fields(res);
 			MYSQL_ROW msg=mysql_fetch_row(res);
 			if(msg){
-                if(pwd != msg[0]){
-                    ret = -2;
+                if(pwd == msg[0]){
+                    ret=0;
                 }
             }else{
-                ret = -1;
+                ret=-1;
             }
 		}
     }else{
-        ret = -1;
+        ret=-2;
     }
-	return ret;
+    return ret;
 }
 
 int SQL::Delete(const string& id)

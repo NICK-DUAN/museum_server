@@ -38,7 +38,7 @@ int main(int argc,char* argv[])
                 print_log(strerror(errno),FATAL);
                 return -2;
             }
-            if(chdir("/")<0){
+            if(chdir("/home/nick/museum_server/")<0){
                 print_log(strerror(errno),FATAL);
                 return -3;
             }
