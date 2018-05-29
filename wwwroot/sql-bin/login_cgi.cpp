@@ -13,22 +13,21 @@ void check_database(char* account, char* pwd)
     cout<<"<img src=\"museum.jpg\" height=\"100%\" width=\"100%\"/>";
     cout<<"</div>";
     cout<<"<h1>博物馆环境检测系统</h1>";
-    cout<<"<form>";
+    cout<<"<form action=\"./temp_cgi\">";
     cout<<"博物馆1<input type=\"radio\" name=\"museum_choice\" value=\"1\" checked=\"checked\">";
     cout<<"<br/>博物馆2<input type=\"radio\" name=\"museum_choice\" value=\"2\"><br/>";
     cout<<"博物馆3<input type=\"radio\"name=\"museum_choice\" value=\"3\"><br/>";
-    cout<<"<p align=\"center\"><a href=\"../work.html\"><input type=\"button\" value=\"确认选择\"></a></p>";
+    //cout<<"<p align=\"center\"><a href=\"../work.html\"><input type=\"button\" value=\"确认选择\"></a></p>";
+    cout<<"<input type=\"submit\" value=\"确认选择\">";
     cout<<"</form></body></center></html>";
     }else if(ret == -1){
         cout<<"<html><meta charset=\"utf-8\"><body background=\"museum.jpg\"><center><h3>503 server busy, please try later</h3>";
-        //cout<<"<p align=\"center\"><a href=\"../reg_log.html\">重新登录</a></p>";
         cout<<"<p align=\"center\"><a href=\"../register.html\"><input type=\"button\" value=\"去注册\"></a></p>";
         cout<<"<p align=\"center\"><a href=\"../reg_log.html\"><input type=\"button\" value=\"重新登录\"></a></p>";
         cout<<"</center></body></html>";
 
     }else if(ret == -2){
         cout<<"<html><meta charset=\"utf-8\"><body background=\"museum.jpg\"><center><h3>please check your password</h3>";
-        //cout<<"<p align=\"center\"><a href=\"../reg_log.html\"><input type=\"button\" value=\"重新登录\"></a></p>";
         cout<<"<p align=\"center\"><a href=\"../register.html\"><input type=\"button\" value=\"去注册\"></a></p>";
         cout<<"<p align=\"center\"><a href=\"../reg_log.html\"><input type=\"button\" value=\"重新登录\"></a></p>";
         cout<<"</center></body></html>";

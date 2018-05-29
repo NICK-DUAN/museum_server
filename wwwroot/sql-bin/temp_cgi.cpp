@@ -1,7 +1,7 @@
 #include "sql_api.h"
 #include <unistd.h>
 
-void insert_to_database(char* choice)
+void database(char* choice)
 {
     SQL s("127.0.0.1",3306,"root","123456","data");
     s.connect();
@@ -56,7 +56,7 @@ int main()
 	}
 
 
-	insert_to_database(data[0]);
+	database(data[0]);
 	
     return 0;
 }

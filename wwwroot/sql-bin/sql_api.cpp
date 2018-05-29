@@ -25,7 +25,9 @@ int SQL::insert(const string& location, const string& temperature, const string&
 {
 	int ret=0;
     string INSERT="insert into museum(`LOCATION`,`TEMPERATURE`,`PM2.5`,`HUNIDITY`,`CO2`, `FORMALDEHTDE`,`LIGHT`) values('";
-    INSERT+="No.1 museum";
+    INSERT+="M 1 ";
+    INSERT+="R ";
+    INSERT+=location;
     INSERT+="','";
     INSERT+=temperature;
     INSERT+="','";
@@ -55,27 +57,47 @@ int SQL::insert(const string& location, const string& temperature, const string&
 	return ret;
 }
 
-//int SQL::choose(const string& choice)
-//{
-//	int ret=0;
-//    string INSERT="insert into CHOICE(`choice`) values('";
-//    INSERT+=choice;
-//    INSERT+="')";
-//    int r=mysql_query(_conn,INSERT.c_str());
-//    cout<<"<html><meta charset=\"utf-8\"><center><body>";
-//    cout<<"<div id=\"Layer1\" style=\"position:absolute; width:100%; height:100%; z-index:-1\">";
-//    cout<<"<img src=\"museum.jpg\" height=\"100%\" width=\"100%\"/>";
-//    cout<<"</div>";
-//    if(r!=0){
-//        cout<<"<p><font size=\"6\" face=\"arial\" color=\"red\">存储失败!</font></p>";
-//		ret=-1;
-//    }else{
-//		cout<<"<p><font size=\"6\" face=\"arial\" color=\"red\">存储成功!</font></p>";
-//	}
-//    cout<<"<p align=\"center\"><a href=\"../work.html\"><input type=\"button\" value=\"返回上一界面\">";
-//    cout<<"</a></p></body></center></html>";
-//	return ret;
-//}
+
+int SQL::choose(const string& choice)
+{
+	int ret=0;
+    string INSERT="insert into CHOICE(`choice`) values('";
+    INSERT+=choice;
+    INSERT+="')";
+    int r=mysql_query(_conn,INSERT.c_str());
+    cout<<"<html><meta charset=\"utf-8\"><center><body>";
+    cout<<"<div id=\"Layer1\" style=\"position:absolute; width:100%; height:100%; z-index:-1\">";
+    cout<<"<img src=\"museum.jpg\" height=\"100%\" width=\"100%\"/>";
+    cout<<"</div>";
+    if(r!=0){
+        cout<<"<p><font size=\"6\" face=\"arial\" color=\"red\">选择失败!</font></p>";
+		ret=-1;
+    }else{
+        cout<<"<h1>博物馆环境检测系统</h1>";
+        cout<<"<form action=\"./insert_cgi\">";
+        cout<<"节点位置";
+        cout<<"<input type=\"text\" name=\"guangzhao\" value=\"\"><br><br>";
+        cout<<"馆内温度";
+        cout<<"<input type=\"text\" name=\"wendu\" value=\"\"><br><br>";
+        cout<<"PM__2.5";
+        cout<<"<input type=\"text\" name=\"guangzhao\" value=\"\"><br><br>";
+        cout<<"馆内湿度";
+        cout<<"<input type=\"text\" name=\"shidu\" value=\"\"><br><br>";
+        cout<<"CO2浓度";
+        cout<<"<input type=\"text\" name=\"guangzhao\" value=\"\"><br><br>";
+        cout<<"甲醛浓度";
+        cout<<"<input type=\"text\" name=\"guangzhao\" value=\"\"><br><br>";
+        cout<<"光照强度";
+        cout<<"<input type=\"text\" name=\"guangzhao\" value=\"\"><br><br><br>";
+        cout<<"<input type=\"submit\" value=\"插入\">";
+        cout<<"</form>";
+        cout<<"<form action=\"./show_cgi\">";
+        cout<<"<input type=\"submit\" value=\"显示\"></form>";
+	}
+    cout<<"<p align=\"center\"><a href=\"../work.html\"><input type=\"button\" value=\"返回上一界面\">";
+    cout<<"</a></p></body></center></html>";
+	return ret;
+}
 
 string formatstr(string str){
     if(str.length() >= 15){
@@ -120,38 +142,6 @@ int SQL::show()
 	return ret;
 }
 
-int SQL::select(const string &id)
-{
-	int ret=0;
-	string select="select * from museum where id in(";
-	select+=id;
-	select+=")";
-	if(mysql_query(_conn,select.c_str())==0){
-		res=mysql_store_result(_conn);
-		if(res){
-			int col=mysql_num_fields(res);
-			MYSQL_FIELD *fd;
-			for(;fd=mysql_fetch_field(res);){
-				cout<<fd->name<<" ";
-			}
-			cout<<endl<<endl;
-			MYSQL_ROW msg=mysql_fetch_row(res);
-			if(msg){
-				int i=0;
-				for(i=0;i<col;i++){
-					cout<<msg[i]<<"   ";
-				}
-				cout<<endl<<endl;
-			}else{
-				ret=-1;
-				cout<<"Please Make Sure You Entered A Correct ID"<<endl;
-		        cout<<"OR This Table Doesn't Include This Message!'"<<endl;
-			}
-		}
-	}
-	return ret;
-}
-
 int SQL::Register(const string& account, const string& pwd){
 	int ret = 0;
 	string reg="insert into museum_user(account,password) values('";
@@ -173,6 +163,24 @@ int SQL::Register(const string& account, const string& pwd){
 	}
 }
 
+string SQL::select()
+{
+    string ret;
+	string select="select * from `CHOICE` order by `id` desc";
+	if(mysql_query(_conn,select.c_str())==0){
+		res=mysql_store_result(_conn);
+		if(res){
+			int col=mysql_num_fields(res);
+			MYSQL_ROW msg=mysql_fetch_row(res);
+			if(msg){
+                ret=msg[1];
+			}else{
+				ret="select error";
+			}
+		}
+	}
+    return ret;
+}
 int SQL::login(const string& account, const string& pwd){
 	int ret = 0;
 	string select="select password from museum_user where account=\"";
@@ -197,26 +205,26 @@ int SQL::login(const string& account, const string& pwd){
     return ret;
 }
 
-int SQL::Delete(const string& id)
-{
-	int ret=0;
-	if(select(id)<0){
-		ret=-1;
-	}
-	string Delete="delete from museum where id='";
-	Delete+=id;
-	Delete+="'";
-	cout<<Delete<<endl;
-	int r=mysql_query(_conn,Delete.c_str());
-    //int r=mysql_query(_conn,INSERT.c_str());
-	if(r!=0){
-		ret=-1;
-		cerr<<"Delete Failed"<<endl;
-	}else{
-		cout<<"delete success!"<<endl;
-	}
-	return ret;
-}
+//int SQL::Delete(const string& id)
+//{
+//	int ret=0;
+//	if(select()<0){
+//		ret=-1;
+//	}
+//	string Delete="delete from museum where id='";
+//	Delete+=id;
+//	Delete+="'";
+//	cout<<Delete<<endl;
+//	int r=mysql_query(_conn,Delete.c_str());
+//    //int r=mysql_query(_conn,INSERT.c_str());
+//	if(r!=0){
+//		ret=-1;
+//		cerr<<"Delete Failed"<<endl;
+//	}else{
+//		cout<<"delete success!"<<endl;
+//	}
+//	return ret;
+//}
 
 SQL::~SQL()
 {

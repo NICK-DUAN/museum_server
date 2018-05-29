@@ -14,9 +14,10 @@ public:
     SQL(const string &host,const int& port,const string& user="root",const string& password="",const string& database="data");
     int connect();
     int insert(const string& location, const string& temperature, const string& pm, const string& hunidity, const string& co2, const string fromaldehtde, const string& light);
-	int select(const string &id);
+    int choose(const string& choice);
+	string select();
 	int show();
-	int Delete(const string& id);
+	//int Delete(const string& id);
     int Register(const string& account, const string& pwd);
     int login(const string& account, const string& pwd);
     ~SQL();

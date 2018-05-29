@@ -53,7 +53,7 @@ string formatstr(string str){
     return str;
 }
 
-int SQL::show()
+int SQL::shown()
 {
 	int ret=0;
 	string show="select * from museum order by `TIME` desc";
@@ -67,8 +67,39 @@ int SQL::show()
 				MYSQL_ROW row=mysql_fetch_row(res);
 				j=0;
 				for(j=1;j<col;j++){
-                    cout<<formatstr(row[j])<<",";
+                    cout<<row[j]<<",";
 				}
+		}else{
+			ret=-1;
+		}
+	}else{
+		ret=-2;
+	}
+	return ret;
+}
+
+int SQL::showh()
+{
+	int ret=0;
+	string show="select * from museum order by `TIME` desc";
+	if(mysql_query(_conn,show.c_str())==0){
+		res=mysql_store_result(_conn);
+		if(res){
+			int nums=mysql_num_rows(res);
+			int col =mysql_num_fields(res);
+			//MYSQL_FIELD *fd;
+            //for(;fd=mysql_fetch_field(res);){
+            //    cout<<fd->name<<",";
+			//}
+			int i=0;
+			int j=0;
+			for(;i<nums;i++){
+				MYSQL_ROW row=mysql_fetch_row(res);
+				for(j=1;j<col;j++){
+                    cout<<row[j]<<",";
+				}
+                cout<"@";
+			}
 		}else{
 			ret=-1;
 		}

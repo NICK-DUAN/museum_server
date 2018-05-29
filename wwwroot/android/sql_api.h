@@ -15,7 +15,8 @@ public:
     int connect();
     int insert(const string& temperature,const string& light,const string& water);
 	int select(const string &id);
-	int show();
+	int shown();
+	int showh();
 	int Delete(const string& id);
     int Register(const string& account, const string& pwd);
     int login(const string& account, const string& pwd);

@@ -4,9 +4,11 @@ MYSQL_LIB=$(ROOTPATH)/lib/lib
 
 
 .PHONY:all
-all:show_cgi register_cgi login_cgi
+all:shown_cgi showh_cgi register_cgi login_cgi
 
-show_cgi:show_cgi.o sql_api.o
+shown_cgi:shown_cgi.o sql_api.o
+	g++ -o $@ $^ -L$(MYSQL_LIB) -lmysqlclient -g
+showh_cgi:showh_cgi.o sql_api.o
 	g++ -o $@ $^ -L$(MYSQL_LIB) -lmysqlclient -g
 register_cgi:register_cgi.o sql_api.o
 	g++ -o $@ $^ -L$(MYSQL_LIB) -lmysqlclient -g
@@ -17,7 +19,7 @@ login_cgi:login_cgi.o sql_api.o
 
 .PHONY:clean
 clean:
-	rm -f show_cgi register_cgi login_cgi *.o
+	rm -f shown_cgi showh_cgi register_cgi login_cgi *.o
 .PHONY:debug
 debug:
 	echo $(MYSQL_INCLUDE)
